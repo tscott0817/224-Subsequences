@@ -26,12 +26,12 @@ public class Analyzer {
             System.out.println("Outer loop");
             System.out.println("Current index of 'i': " + i);
             System.out.println("Current element of 'i': " + originalList.get(i));
-            lengths.add(opt(i));
+            opt(i);
         }
-        System.out.println(lengths);
+
         System.out.println(M);
 
-        return 0;
+        return Collections.max(M);
     }
 
     public int opt(int i) {
