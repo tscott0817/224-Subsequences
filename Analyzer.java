@@ -53,9 +53,12 @@ public class Analyzer {
                 System.out.println("Current index of 'j': " + j);
                 System.out.println("Current element at 'j': " + originalList.get(j));
                 System.out.println("Is " + originalList.get(i) + " < " + originalList.get(j) + " ?");
+                //int tempVal = j + 1;
 
-                if (originalList.get(i) < originalList.get(j)) {
-                    val = 1 + M.get(j);
+                //if (originalList.get(i) < originalList.get(j)) {
+                if (i < j & j <= M.size() - 1 & originalList.get(j) > originalList.get(i)) {
+                    //val = 1 + M.get(j);
+                    val = 1 + opt(j);
                     System.out.println("Yes, set length to: " + val);
                     System.out.println("New length value " + val + " at index: " + i);
                     M.set(i, val);
