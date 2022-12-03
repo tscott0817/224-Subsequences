@@ -1,35 +1,27 @@
+ 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Analyzer {
 
-    //    static List<Integer> M = new ArrayList<>();
     List<Integer> M = new ArrayList<>();
     List<Integer> originalList = new ArrayList<>();
-    List<Integer> lengths = new ArrayList<>();
     public int analyze(List<Integer> list) {
 
+        // Copy list for class use and initialize memoized list
         for (int i = 0; i < list.size(); i++) {
             originalList.add(list.get(i));
-            M.add(1);
+            M.add(0);
         }
-        M.set(M.size() - 1, 1);
+        M.set(M.size() - 1, 1);  // Set last element to length of 1
 
-        System.out.println(M);
-        System.out.println(M.size());
-        System.out.println(list);
-        System.out.println("\n");
-
-        // TODO: Out of bounds errors, looping to -1 to combat. This is the only setup that seems to work
-        for (int i = list.size() - 1; i > -1; i--) {
-            System.out.println("Outer loop");
-            System.out.println("Current index of 'i': " + i);
-            System.out.println("Current element of 'i': " + originalList.get(i));
+        // Iterate backwards from last element of list
+        for (int i = list.size() - 1; i >= 0; i--) {
             opt(i);
         }
-
-        System.out.println(M);
+        //System.out.print(traceback(0));
 
         return Collections.max(M);
     }
@@ -37,41 +29,33 @@ public class Analyzer {
     public int opt(int i) {
 
         int val = 0;
-        if (M.get(i) > 1) {
-            System.out.println("M greater than 0. M at index " + i + " = " + M.get(i));
-            System.out.println("\n");
+        if (M.get(i) > 0) {
             return M.get(i);
         }
         else {
-            System.out.println("\n");
-            System.out.println("M NOT greater than 0. M at index " + i + " = " + M.get(i));
-
-            // TODO: Not sure if 'j' should be 'i' or 'i + 1'
-            System.out.println("Current length at 'i': " + M.get(i));
+            // Start at next position and check all elements until the end of list
             for (int j = i + 1; j < originalList.size(); j++) {
-                System.out.println("Inner loop");
-                System.out.println("Current index of 'j': " + j);
-                System.out.println("Current element at 'j': " + originalList.get(j));
-                System.out.println("Is " + originalList.get(i) + " < " + originalList.get(j) + " ?");
-                //int tempVal = j + 1;
 
-                //if (originalList.get(i) < originalList.get(j)) {
-                if (i < j & j <= M.size() - 1 & originalList.get(j) > originalList.get(i)) {
-                    //val = 1 + M.get(j);
+                // Call recursively for each element that is larger than 'i'
+                if (originalList.get(i) < originalList.get(j)) {
                     val = 1 + opt(j);
-                    System.out.println("Yes, set length to: " + val);
-                    System.out.println("New length value " + val + " at index: " + i);
                     M.set(i, val);
-                    break;
+
+                    // Compare against max value and choose to continue or return
+                    if (val != Collections.max(M) & j < originalList.size() - 1) {
+                        val = opt(j + 1);
+
+                    }
+                    else {
+                        return val;
+                    }
                 }
-                // If no larger elements to right of 'i', i.e. just don't change length
+                // If no larger elements to right, length is 1
                 else {
-                    val = M.get(i);
-                    System.out.println("No, set length to " + M.get(i));
+                    val = 1;
                     M.set(i, val);
                 }
             }
-            System.out.println("\n");
             return val;
 
         }
@@ -83,7 +67,10 @@ public class Analyzer {
         List<Integer> res = new ArrayList<>();
 
         for (int j = 0; j < M.size(); j++) {
-            res.add(M.get(j));
+            if (M.get(i) == 1 + M.get(j)) {
+
+
+            }
         }
         return res;
 
